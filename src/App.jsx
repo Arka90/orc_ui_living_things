@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import { useState } from "react";
+import "./App.scss";
+import FileUpload from "./FileUpload";
+import FileView from "./FileView";
+import UploadButton from "./UploadButton";
+import Sucess from "./Success";
+import Error from "./Error";
 function App() {
-  const [count, setCount] = useState(0)
+  const [files, setFiles] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState(false);
+  const [status, setStatus] = useState(null);
+  const url = files.length > 0 ? URL.createObjectURL(files[0]) : null;
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app">
+      <FileUpload
+        files={files}
+        setFiles={setFiles}
+        setError={setError}
+        setStatus={setStatus}
+      />
+      {error && <Error error={error} />}
+
+      {url && !status && (
+        <>
+          <FileView url={url} />
+          <UploadButton
+            file={files[0]}
+            setIsUploading={setIsUploading}
+            isUploading={isUploading}
+            setError={setError}
+            setStatus={setStatus}
+          />
+        </>
+      )}
+
+      {status && <Sucess />}
+    </div>
+  );
 }
 
-export default App
+export default App;
