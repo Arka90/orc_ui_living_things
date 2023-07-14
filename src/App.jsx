@@ -10,6 +10,7 @@ function App() {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState(false);
   const [status, setStatus] = useState(null);
+  
   const url = files.length > 0 ? URL.createObjectURL(files[0]) : null;
 
   return (
